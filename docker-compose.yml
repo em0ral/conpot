@@ -13,3 +13,49 @@ services:
       - "69:6969/udp" #TFTP
       - "44818:44818" #EN/IP
     restart: always
+
+  kali: 
+    build: ./kali
+    image: packethead/kali
+    container_name: kali
+    hostname: kali
+    privileged: true
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+    tty: true
+    volumes: 
+      - /Users/em0ral/ContainerData/kali/:/root/kali 
+      - ./kali/config/.tmux.conf:/root/.tmux.conf
+    restart: unless-stopped
+
+  kali2:
+    image: kasmweb/core-kali-rolling:1.13.0
+    container_name: kali-gui
+    hostname: kali-gui
+    privileged: true
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+    user: 'root'
+    tty: true
+    shm_size: '512m'
+    environment:
+      VNC_PW: 'password'
+    ports:
+      - 6901:6901
+    volumes: 
+      - /Users/em0ral/ContainerData/kali-gui:/home/kasm-user/kali
+    restart: unless-stopped
+
+  Parrot:
+    build: ./parrot
+    image: packethead/parrot
+    container_name: parrot
+    hostname: parrot
+    privileged: true
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+    tty: true
+    volumes: 
+      - /Users/em0ral/ContainerData/parrot/:/root/htb
+      - ./parrot/config/.tmux.conf:/root/.tmux.conf
+
